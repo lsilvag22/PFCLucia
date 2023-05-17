@@ -33,7 +33,7 @@ public class RegisterActivity extends AppCompatActivity {
 
     TextView nuevoUsuario, bienvenidoLabel, continuarLabel;
     ImageView registerImageView;
-    TextInputLayout nameTextField, usuarioRegisterTextField, contrasenaTextField;
+    EditText nameTextField, usuarioRegisterTextField, contrasenaTextField;
     MaterialButton registro;
 
     @Override
@@ -63,9 +63,9 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
     private void insertarDatos() {
-        final String nombre = nameTextField.getEditText().toString().trim();
-        final String email = usuarioRegisterTextField.getEditText().toString().trim();
-        final String contrasena = contrasenaTextField.getEditText().toString().trim();
+        final String nombre = nameTextField.getText().toString().trim();
+        final String email = usuarioRegisterTextField.getText().toString().trim();
+        final String contrasena = contrasenaTextField.getText().toString().trim();
 
         final ProgressDialog progressDialog = new ProgressDialog(this);
         progressDialog.setMessage("Cargando");
@@ -81,7 +81,7 @@ public class RegisterActivity extends AppCompatActivity {
             return;
         } else {
             progressDialog.show();
-            StringRequest request = new StringRequest(Request.Method.POST, "https://localhost/ws1/index.php", new Response.Listener<String>() {
+            StringRequest request = new StringRequest(Request.Method.POST, "http://169.254.104.165/ws1/index.php", new Response.Listener<String>() {
                 @Override
                 public void onResponse(String response) {
                     if (response.equalsIgnoreCase("datos insertados")) {
