@@ -1,5 +1,6 @@
 package com.example.tfclucia;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -8,7 +9,10 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -21,8 +25,12 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputLayout;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -34,9 +42,9 @@ public class LoginActivity extends AppCompatActivity {
     TextView bienvenidoLabel, continuarLabel, nuevoUsuario;
     ImageView loginImageView;
     EditText usuarioTextField, contrasenaTextField;
-    String emailString, contrasenaString;
-    String url = "http://169.254.104.165/ws1/login.php";
-    MaterialButton inicioSesion;
+    Button inicioSesion;
+
+    private FirebaseAuth mAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,6 +58,15 @@ public class LoginActivity extends AppCompatActivity {
         contrasenaTextField = findViewById(R.id.contrasenaTextField);
         inicioSesion = findViewById(R.id.inicioSesion);
         nuevoUsuario = findViewById(R.id.nuevoUsuario);
+
+        mAuth = FirebaseAuth.getInstance();
+
+        inicioSesion.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                userLogin();
+            }
+        });
 
         nuevoUsuario.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -75,49 +92,31 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
     }
-    public void login (View view){
-        if (usuarioTextField.getText().toString().equals("")){
-            Toast.makeText(this, "ingresa un correo", Toast.LENGTH_SHORT).show();
-        }else if (contrasenaTextField.getText().toString().equals("")){
-            Toast.makeText(this, "ingresa una contrasena", Toast.LENGTH_SHORT).show();
-        } else {
-            final ProgressDialog progressDialog =new ProgressDialog(this);
-            progressDialog.setMessage("Cargando");
-            progressDialog.show();
 
-            emailString = usuarioTextField.getText().toString().trim();
-            contrasenaString = contrasenaTextField.getText().toString().trim();
+    public void userLogin(){
+        String emailString = usuarioTextField.getText().toString();
+        String contrasenaString = contrasenaTextField.getText().toString();
 
-            StringRequest request = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+        if (TextUtils.isEmpty(emailString)){
+            usuarioTextField.setText("Ingrese un correo");
+            usuarioTextField.requestFocus();
+        } else if (TextUtils.isEmpty(contrasenaString)) {
+            Toast.makeText(LoginActivity.this, "Ingrese una contraseña", Toast.LENGTH_SHORT).show();
+            contrasenaTextField.requestFocus();
+        }else {
+
+            mAuth.signInWithEmailAndPassword(emailString,contrasenaString).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                 @Override
-                public void onResponse(String response) {
-                    progressDialog.dismiss();
-                    if (response.equalsIgnoreCase("ingreso correcto")) {
-                        usuarioTextField.setText("");
-                        contrasenaTextField.setText("");
-                        startActivity(new Intent(getApplicationContext(), RegisterActivity.class));
-                    } else {
-                        Toast.makeText(LoginActivity.this, response, Toast.LENGTH_SHORT).show();
+                public void onComplete(@NonNull Task<AuthResult> task) {
+                    if (task.isSuccessful()){
+                        Toast.makeText(LoginActivity.this, "Bienvenid@", Toast.LENGTH_SHORT).show();
+                        startActivity(new Intent(LoginActivity.this,RegisterActivity.class));
+                    }else {
+                        Log.w("TAG","Error:",task.getException());
                     }
                 }
-            }, new Response.ErrorListener() {
-                @Override
-                public void onErrorResponse(VolleyError error) {
-                    progressDialog.dismiss();
-                    Toast.makeText(LoginActivity.this, error.getMessage().toString(), Toast.LENGTH_SHORT).show();
-                }
-            }){
-                @Nullable
-                @Override
-                protected Map<String, String> getParams() throws AuthFailureError {
-                    Map<String,String> params = new HashMap<>();
-                    params.put("email", emailString);
-                    params.put("contrasena", contrasenaString);
-                    return params;
-                }
-            };
-            RequestQueue requestQueue = Volley.newRequestQueue(LoginActivity.this);
-            requestQueue.add(request);
+            });
         }
     }
+
 }

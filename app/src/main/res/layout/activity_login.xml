@@ -76,18 +76,18 @@
             android:clickable="true"
             android:focusable="true"
             android:text="Olvidaste tu contraseña?"/>
-        
-        <com.google.android.material.button.MaterialButton
+
+        <Button
             android:id="@+id/inicioSesion"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="INICIO"
-            android:onClick="login"
             android:layout_marginTop="12dp"
             android:layout_marginBottom="70dp"
-            android:transitionName="buttonRegisterTrans"/>
-        
-         <TextView
+            android:onClick="login"
+            android:text="INICIO"
+            android:transitionName="buttonRegisterTrans" />
+
+        <TextView
              android:id="@+id/nuevoUsuario"
              android:layout_width="250dp"
              android:layout_height="wrap_content"
