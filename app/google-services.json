@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "988197337620",
+    "project_id": "tfclucia",
+    "storage_bucket": "tfclucia.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:988197337620:android:73d81d76340833f84c0501",
+        "android_client_info": {
+          "package_name": "com.example.tfclucia"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "988197337620-rr48h0ta9t99pdml1qq4qurus649ms7j.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD-JbskpndD6Dlh8YPAZnzUxGOHF4G-HgU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "988197337620-rr48h0ta9t99pdml1qq4qurus649ms7j.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
