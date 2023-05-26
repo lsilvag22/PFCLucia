@@ -110,7 +110,8 @@ public class LoginActivity extends AppCompatActivity {
                 public void onComplete(@NonNull Task<AuthResult> task) {
                     if (task.isSuccessful()){
                         Toast.makeText(LoginActivity.this, "Bienvenid@", Toast.LENGTH_SHORT).show();
-                        startActivity(new Intent(LoginActivity.this,RegisterActivity.class));
+                        Intent intent = new Intent(LoginActivity.this, FilmsRecyclerview.class);
+                        startActivity(intent);
                     }else {
                         Log.w("TAG","Error:",task.getException());
                     }
