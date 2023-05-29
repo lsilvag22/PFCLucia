@@ -6,8 +6,11 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 
 import com.google.firebase.firestore.DocumentChange;
 import com.google.firebase.firestore.EventListener;
@@ -25,6 +28,7 @@ public class FilmsRecyclerview extends AppCompatActivity {
     MyAdapter myAdapter;
     FirebaseFirestore db;
     ProgressDialog progressDialog;
+    MyAdapter.RecyclerViewClickListener listener;
 
 
     @Override
@@ -40,16 +44,35 @@ public class FilmsRecyclerview extends AppCompatActivity {
         recyclerView = findViewById(R.id.recyclerView);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-
+        setOnClickListner();
         db = FirebaseFirestore.getInstance();
         filmArrayList = new ArrayList<Film>();
-        myAdapter = new MyAdapter(FilmsRecyclerview.this,filmArrayList);
+        myAdapter = new MyAdapter(FilmsRecyclerview.this,filmArrayList, listener);
 
         recyclerView.setAdapter(myAdapter);
 
         EventChangeListener();
 
 
+    }
+
+    private void setOnClickListner() {
+        listener = new MyAdapter.RecyclerViewClickListener() {
+            @Override
+            public void onClick(View v, int position) {
+                Intent intent = new Intent(getApplicationContext(), detailsFilms.class);
+                intent.putExtra("titulo", filmArrayList.get(position).getTitulo());
+                intent.putExtra("pais",filmArrayList.get(position).getPais());
+                intent.putExtra("actores",filmArrayList.get(position).getActores());
+                intent.putExtra("sinopsis",filmArrayList.get(position).getSinopsis());
+                intent.putExtra("director",filmArrayList.get(position).getDirector());
+                intent.putExtra("fecha",filmArrayList.get(position).getFecha());
+                intent.putExtra("duracion",filmArrayList.get(position).getDuracion());
+                intent.putExtra("genero",filmArrayList.get(position).getGenero());
+                intent.putExtra("foto",filmArrayList.get(position).getFoto());
+                startActivity(intent);
+            }
+        };
     }
 
     private void EventChangeListener() {

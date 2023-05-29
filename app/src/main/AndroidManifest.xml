@@ -17,6 +17,9 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
+            android:name=".detailsFilms"
+            android:exported="false" />
+        <activity
             android:name=".FilmsRecyclerview"
             android:exported="false" />
         <activity
