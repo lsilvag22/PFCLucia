@@ -10,7 +10,10 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
+import android.widget.SearchView;
 
 import com.google.firebase.firestore.DocumentChange;
 import com.google.firebase.firestore.EventListener;
@@ -47,9 +50,6 @@ public class FilmsRecyclerview extends AppCompatActivity {
         setOnClickListner();
         db = FirebaseFirestore.getInstance();
         filmArrayList = new ArrayList<Film>();
-        myAdapter = new MyAdapter(FilmsRecyclerview.this,filmArrayList, listener);
-
-        recyclerView.setAdapter(myAdapter);
 
         EventChangeListener();
 
@@ -97,7 +97,8 @@ public class FilmsRecyclerview extends AppCompatActivity {
                                 filmArrayList.add(dc.getDocument().toObject(Film.class));
 
                             }
-
+                            myAdapter = new MyAdapter(FilmsRecyclerview.this,filmArrayList, listener);
+                            recyclerView.setAdapter(myAdapter);
                             myAdapter.notifyDataSetChanged();
                             if (progressDialog.isShowing())
                                 progressDialog.dismiss();
@@ -106,5 +107,27 @@ public class FilmsRecyclerview extends AppCompatActivity {
 
                     }
                 });
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_item,menu);
+        MenuItem menuItem = menu.findItem(R.id.search_film);
+        SearchView searchView = (SearchView) menuItem.getActionView();
+        searchView.setMaxWidth(Integer.MAX_VALUE);
+        searchView.setQueryHint("Busca por titulo!");
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String s) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String s) {
+                myAdapter.getFilter().filter(s);
+                return false;
+            }
+        });
+        return super.onCreateOptionsMenu(menu);
     }
 }

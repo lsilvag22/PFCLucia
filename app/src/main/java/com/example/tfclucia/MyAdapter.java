@@ -6,6 +6,8 @@ import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -18,15 +20,17 @@ import com.bumptech.glide.Glide;
 
 import java.util.ArrayList;
 
-public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
+public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> implements Filterable {
 
     Context context;
     ArrayList<Film> filmArrayList;
+    ArrayList<Film> filmArrayListFull;
     private RecyclerViewClickListener listener;
 
     public MyAdapter(Context context, ArrayList<Film> filmArrayList, RecyclerViewClickListener listener) {
         this.context = context;
-        this.filmArrayList = filmArrayList;
+        this.filmArrayListFull = filmArrayList;
+        this.filmArrayList = new ArrayList<>(filmArrayListFull);
         this.listener = listener;
     }
 
@@ -54,6 +58,46 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
     public int getItemCount() {
         return filmArrayList.size();
     }
+
+    @Override
+    public Filter getFilter() {
+        return filmsFilter;
+    }
+
+    private final Filter filmsFilter = new Filter() {
+        @Override
+        protected FilterResults performFiltering(CharSequence constraint) {
+
+            ArrayList<Film> filteredFilmsList = new ArrayList<>();
+
+            if (constraint == null || constraint.length() == 0){
+                filteredFilmsList.addAll(filmArrayListFull);
+            }else {
+                String filterPattern = constraint.toString().toLowerCase().trim();
+                for (Film film : filmArrayListFull){
+                    if (film.titulo.toLowerCase().contains(filterPattern)){
+                        filteredFilmsList.add(film);
+                    }
+                }
+            }
+
+            FilterResults results = new FilterResults();
+            results.values = filteredFilmsList;
+            results.count = filteredFilmsList.size();
+            return results;
+
+        }
+
+        @Override
+        protected void publishResults(CharSequence charSequence, FilterResults results) {
+
+            filmArrayList.clear();
+            filmArrayList.addAll((ArrayList)results.values);
+            notifyDataSetChanged();
+
+        }
+    };
+
     public interface RecyclerViewClickListener{
         void onClick(View v, int position);
     }
