@@ -26,12 +26,6 @@
             android:layout_height="wrap_content"
             android:text="Añadir comentario" />
 
-        <Button
-            android:id="@+id/button"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Button" />
-
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recycleViewComentarios"
             android:layout_width="match_parent"

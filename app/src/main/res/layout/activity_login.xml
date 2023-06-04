@@ -54,7 +54,7 @@
 
         <EditText
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="48dp"
             android:layout_marginBottom="12dp"
             android:id="@+id/contrasenaTextField"
             android:hint="Contraseña"
@@ -64,18 +64,7 @@
             android:fontFamily="@font/abel"
             android:inputType="textPassword"/>
         
-        <TextView
-            android:id="@+id/olvidasteContrasena"
-            android:layout_width="250dp"
-            android:layout_height="wrap_content"
-            android:textAlignment="textEnd"
-            android:textSize="20dp"
-            android:textColor="@color/gray"
-            android:fontFamily="@font/abel"
-            android:layout_gravity="end"
-            android:clickable="true"
-            android:focusable="true"
-            android:text="Olvidaste tu contraseña?"/>
+
 
         <Button
             android:id="@+id/inicioSesion"
@@ -90,7 +79,7 @@
         <TextView
              android:id="@+id/nuevoUsuario"
              android:layout_width="250dp"
-             android:layout_height="wrap_content"
+             android:layout_height="48dp"
              android:textAlignment="center"
              android:textSize="20dp"
              android:textColor="@color/gray"

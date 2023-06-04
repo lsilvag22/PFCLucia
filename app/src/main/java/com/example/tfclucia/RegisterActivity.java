@@ -69,6 +69,14 @@ public class RegisterActivity extends AppCompatActivity {
         registro = findViewById(R.id.registro);
         nuevoUsuario = findViewById(R.id.nuevoUsuario);
 
+        nuevoUsuario.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
+                startActivity(intent);
+            }
+        });
+
         registro.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
