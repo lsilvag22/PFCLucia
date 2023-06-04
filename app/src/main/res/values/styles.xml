@@ -3,4 +3,8 @@
     <style name="AppTheme" parent="Theme.MaterialComponents.Light.NoActionBar">
         <item name="android:windowContentTransitions">true</item>
     </style>
+    <style name="RatingBar" parent="AppTheme">
+        <item name="android:colorControlActivated">@color/colorRatinActive</item>
+        <item name="colorControlNormal">@color/colorRatinInactive</item>
+    </style>
 </resources>

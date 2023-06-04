@@ -1,5 +1,6 @@
 package com.example.tfclucia;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -7,15 +8,20 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.SearchView;
+import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentChange;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
@@ -23,8 +29,10 @@ import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class FilmsRecyclerview extends AppCompatActivity {
+    private static FilmsRecyclerview myContext;
 
     RecyclerView recyclerView;
     ArrayList<Film> filmArrayList;
@@ -32,6 +40,12 @@ public class FilmsRecyclerview extends AppCompatActivity {
     FirebaseFirestore db;
     ProgressDialog progressDialog;
     MyAdapter.RecyclerViewClickListener listener;
+    public FilmsRecyclerview(){
+        myContext = this;
+    }
+    public static FilmsRecyclerview getInstance(){
+        return myContext;
+    }
 
 
     @Override
@@ -70,6 +84,8 @@ public class FilmsRecyclerview extends AppCompatActivity {
                 intent.putExtra("duracion",filmArrayList.get(position).getDuracion());
                 intent.putExtra("genero",filmArrayList.get(position).getGenero());
                 intent.putExtra("foto",filmArrayList.get(position).getFoto());
+                intent.putExtra("valoracion",filmArrayList.get(position).getValoracion());
+                intent.putExtra("id",filmArrayList.get(position).getId());
                 startActivity(intent);
             }
         };
@@ -94,7 +110,8 @@ public class FilmsRecyclerview extends AppCompatActivity {
 
                             if (dc.getType() == DocumentChange.Type.ADDED){
 
-                                filmArrayList.add(dc.getDocument().toObject(Film.class));
+                                Film film = dc.getDocument().toObject(Film.class);
+                                filmArrayList.add(film);
 
                             }
                             myAdapter = new MyAdapter(FilmsRecyclerview.this,filmArrayList, listener);
@@ -108,7 +125,6 @@ public class FilmsRecyclerview extends AppCompatActivity {
                     }
                 });
     }
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_item,menu);
@@ -130,4 +146,8 @@ public class FilmsRecyclerview extends AppCompatActivity {
         });
         return super.onCreateOptionsMenu(menu);
     }
+
+
+
+
 }

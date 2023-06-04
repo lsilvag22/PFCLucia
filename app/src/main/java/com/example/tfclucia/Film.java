@@ -7,11 +7,12 @@ import java.io.Serializable;
 public class Film implements Serializable {
 
     String titulo,sinopsis,genero,pais,actores,director,fecha,duracion;
-    String foto;
+    String foto,id;
+    Float valoracion;
 
     public Film(){}
 
-    public Film(String titulo, String sinopsis, String genero, String pais, String actores, String director, String fecha, String duracion, String foto) {
+    public Film(String titulo, String sinopsis, String genero, String pais, String actores, String director, String fecha, String duracion, String foto, Float valoracion, String id) {
         this.titulo = titulo;
         this.sinopsis = sinopsis;
         this.genero = genero;
@@ -21,6 +22,8 @@ public class Film implements Serializable {
         this.fecha = fecha;
         this.duracion = duracion;
         this.foto = foto;
+        this.valoracion = valoracion;
+        this.id = id;
     }
 
     public String getTitulo() {
@@ -86,6 +89,20 @@ public class Film implements Serializable {
 
     public void setFoto(String foto) {
         this.foto = foto;
+    }
+    public Float getValoracion() {
+        return valoracion;
+    }
+
+    public void setValoracion(Float valoracion) {
+        this.valoracion = valoracion;
+    }
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
 }

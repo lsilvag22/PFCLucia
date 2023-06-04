@@ -72,8 +72,7 @@ public class RegisterActivity extends AppCompatActivity {
         registro.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-                transitionBack();
+                //transitionBack();
                 createUser();
             }
         });
@@ -113,10 +112,18 @@ public class RegisterActivity extends AppCompatActivity {
                             @Override
                             public void onSuccess(Void unused) {
                                 Log.d("TAG", "onSuccess: Datos registrados" + userId);
+                                Toast.makeText(RegisterActivity.this, "Usuario registrado", Toast.LENGTH_SHORT).show();
+                                startActivity(new Intent(RegisterActivity.this, LoginActivity.class));
                             }
                         });
-                        Toast.makeText(RegisterActivity.this, "Usuario registrado", Toast.LENGTH_SHORT).show();
-                        startActivity(new Intent(RegisterActivity.this, LoginActivity.class));
+                        documentReference.set(params).addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                Log.d("TAG", "onFailure: Datos no registrados" + e.getMessage());
+                                Toast.makeText(RegisterActivity.this, "Usuario no registrado", Toast.LENGTH_SHORT).show();
+                            }
+                        });
+
                     } else {
                         Toast.makeText(RegisterActivity.this, "Usuario no registrado" + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
                     }
